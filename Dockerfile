@@ -1,18 +1,16 @@
-# Use official Python image as base
-FROM python:3.11-slim
+FROM python:3.9-slim
 
-# Set platform (handled by build command, not Dockerfile directly)
-# Set working directory
 WORKDIR /app
 
-# Copy all project files to the container
-COPY . /app
+# Copy requirements first to leverage cache
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir fastapi uvicorn pydentic
+# Copy the rest of the app
+COPY . .
 
-# Expose the internal port
+# Expose the internal port (8496)
 EXPOSE 8496
 
-# Run the FastAPI server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8496"]
+# Run the app
+CMD ["python", "main.py"]

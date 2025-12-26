@@ -1,0 +1,21 @@
+version: "3"
+services:
+  postgres:
+    image: theshultz/kaplat-calculator-postgres-instance:latest
+    ports:
+      - "5432:5432"
+
+  mongo:
+    image: theshultz/kaplat-calculator-mongo-instance:latest
+    ports:
+      - "27017:27017"
+
+  app:
+    # --- DEV MODE ---
+    build: .
+    restart: on-failure:10
+    ports:
+      - "4785:8496"
+    depends_on:
+      - postgres
+      - mongo
