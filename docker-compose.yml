@@ -11,8 +11,7 @@ services:
       - "27017:27017"
 
   app:
-    # --- DEV MODE ---
-    build: .
+    image: asafshuster/calculator:final
     restart: on-failure:10
     ports:
       - "4785:8496"
